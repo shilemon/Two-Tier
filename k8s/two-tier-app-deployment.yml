@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: two-tier-app
+  labels:
+    app: two-tier-app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: two-tier-app
+  template:
+    metadata:
+      labels:
+        app: two-tier-app
+    spec:
+      containers:
+        - name: two-tier-app-pod
+          image: emon110852/flaskapp:latest
+          imagePullPolicy: Always
+          env:
+            - name: MYSQL_HOST
+              value: "mysql"      # replace with your MySQL Service name if different
+            - name: MYSQL_PASSWORD
+              value: "Admin"
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_DB
+              value: "mydb"
+          ports:
+            - containerPort: 5000
